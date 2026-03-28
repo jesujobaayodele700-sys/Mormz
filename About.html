@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mormz – About Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:       #FFD6FF;
+      --lavender:   #E7C6FF;
+      --purple:     #C8B6FF;
+      --periwinkle: #B8C0FF;
+      --blue:       #BBD0FF;
+      --white:      #FFFFFF;
+      --off-white:  #F2F2F2;
+      --black:      #414141;
+      --black2:     #757272;
+      --border:     #EFEFEF;
+      --r-section:  30px;
+      --r-card:     20px;
+      --side:       15px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px; color: #595959; letter-spacing: -0.02em;
+      background: #fff; overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      letter-spacing: -0.04em; color: var(--black);
+    }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 40px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: #fff; z-index: 100; gap: 16px;
+    }
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 15px;
+      letter-spacing: -0.04em; color: var(--black); flex-shrink: 0; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 13px; color: #595959;
+      letter-spacing: -0.02em; transition: color 0.2s ease; white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--purple); font-weight: 600; }
+    .btn-nav {
+      background: var(--pink); border: none; border-radius: 50px; padding: 9px 20px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600;
+      color: var(--black); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-nav:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,214,255,0.5); }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all 0.3s ease; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile-menu {
+      display: none; position: fixed; top: 53px; left: 0; right: 0;
+      background: #fff; border-bottom: 1px solid var(--border); padding: 20px 24px;
+      z-index: 99; flex-direction: column; gap: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a { text-decoration: none; font-size: 14px; color: #595959; transition: color 0.2s ease; }
+    .nav-mobile-menu a:hover { color: var(--purple); }
+    .nav-mobile-menu .btn-nav { width: 100%; text-align: center; }
+
+    .section-label {
+      font-family: 'Open Sans', sans-serif; font-size: 11px; color: var(--purple);
+      letter-spacing: 0.04em; margin-bottom: 4px; font-weight: 600; text-transform: uppercase;
+    }
+
+    /* ─── HERO ─── */
+    .about-hero {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 50%, var(--periwinkle) 100%);
+      border-radius: var(--r-section); margin: 8px var(--side);
+      padding: 90px 56px; text-align: center; position: relative; overflow: hidden;
+    }
+    .about-hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .about-hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -40px;
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(200,182,255,0.3) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .about-hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+    .about-hero h1 { font-size: 48px; line-height: 1.1; margin-bottom: 16px; }
+    .about-hero h1 em { color: rgba(80,50,120,0.75); font-style: italic; }
+    .about-hero p { font-size: 14px; color: #595959; line-height: 1.7; max-width: 520px; margin: 0 auto; }
+
+    /* ─── MISSION ─── */
+    .mission-section { padding: 60px 40px; }
+    .mission-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .mission-text h2 { font-size: 28px; margin-bottom: 12px; }
+    .mission-text p { font-size: 13px; color: #595959; line-height: 1.75; margin-bottom: 14px; }
+    .mission-text p strong { color: var(--black); font-weight: 600; }
+    .mission-quote {
+      background: var(--lavender); border-radius: var(--r-card); padding: 22px 24px;
+      margin-top: 20px; border-left: 4px solid var(--purple);
+    }
+    .mission-quote p { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: var(--black); font-style: italic; line-height: 1.5; margin: 0; }
+    .mission-img { border-radius: var(--r-card); overflow: hidden; }
+    .mission-img img { width: 100%; height: 380px; object-fit: cover; border-radius: var(--r-card); }
+
+    /* ─── VALUES ─── */
+    .values-section {
+      background: var(--periwinkle); border-radius: var(--r-section);
+      margin: 0 var(--side) 8px; padding: 60px 56px;
+    }
+    .values-section h2 { font-size: 26px; margin-bottom: 6px; text-align: center; }
+    .values-section > .sub { font-size: 13px; color: #595959; text-align: center; margin-bottom: 40px; }
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .value-card {
+      background: var(--white); border-radius: var(--r-card); padding: 28px 22px;
+      text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .value-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(184,192,255,0.28); }
+    .value-icon {
+      width: 52px; height: 52px; border-radius: 16px; background: var(--lavender);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .value-icon svg { width: 26px; height: 26px; stroke: var(--black); fill: none; stroke-width: 1.5; }
+    .value-card h4 { font-size: 14px; }
+    .value-card p { font-size: 12px; color: #595959; line-height: 1.6; }
+
+    /* ─── WHO WE SERVE ─── */
+    .serve-section { padding: 60px 40px; }
+    .serve-section h2 { font-size: 28px; margin-bottom: 6px; }
+    .serve-section > .sub { font-size: 13px; color: #595959; margin-bottom: 40px; }
+    .serve-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .serve-card {
+      border-radius: var(--r-card); overflow: hidden; position: relative;
+      transition: transform 0.3s ease; cursor: default;
+    }
+    .serve-card:hover { transform: translateY(-6px); }
+    .serve-card-img { height: 260px; overflow: hidden; position: relative; }
+    .serve-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .serve-card:hover .serve-card-img img { transform: scale(1.04); }
+    .serve-card-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(65,65,65,0.82) 0%, transparent 60%);
+      padding: 24px 20px 20px;
+    }
+    .serve-card-overlay h4 { font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .serve-card-overlay p { font-size: 11.5px; color: rgba(255,255,255,0.82); line-height: 1.5; }
+
+    /* ─── TECHNOLOGY STORY ─── */
+    .tech-story-section {
+      background: var(--blue); border-radius: var(--r-section);
+      margin: 0 var(--side) 8px; padding: 60px 56px;
+      display: flex; align-items: center; gap: 60px;
+    }
+    .tech-story-left { flex: 1; }
+    .tech-story-left h2 { font-size: 26px; margin-bottom: 12px; }
+    .tech-story-left p { font-size: 13px; color: #595959; line-height: 1.75; margin-bottom: 14px; }
+    .tech-story-pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .tech-pill {
+      background: var(--white); border-radius: 50px; padding: 7px 16px;
+      font-size: 11px; font-weight: 600; color: var(--black);
+    }
+    .tech-story-right { flex-shrink: 0; width: 300px; }
+    .tech-story-right img { width: 100%; height: 280px; object-fit: contain; background: rgba(255,255,255,0.45); padding: 16px; border-radius: var(--r-card); }
+
+    /* ─── CTA BANNER ─── */
+    .cta-section {
+      padding: 60px 40px; text-align: center;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 100%);
+      border-radius: var(--r-section); margin: 0 var(--side) 8px;
+    }
+    .cta-section h2 { font-size: 30px; margin-bottom: 10px; }
+    .cta-section p { font-size: 13px; color: #595959; max-width: 460px; margin: 0 auto 28px; line-height: 1.65; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-primary {
+      background: var(--periwinkle); border: none; border-radius: 50px; padding: 12px 28px;
+      font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--black);
+      cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(184,192,255,0.45); }
+    .btn-cta-secondary {
+      background: transparent; border: 2px solid var(--periwinkle); border-radius: 50px; padding: 12px 28px;
+      font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--black);
+      cursor: pointer; transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-cta-secondary:hover { background: rgba(184,192,255,0.2); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--black); border-radius: var(--r-section) var(--r-section) 0 0;
+      margin: 0 var(--side) 0; padding: 50px 48px 28px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+    .footer-brand h3 { font-size: 15px; color: #fff; margin-bottom: 8px; }
+    .footer-brand p { font-size: 12px; color: #aaa; line-height: 1.65; margin-bottom: 16px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .social-icon {
+      width: 28px; height: 28px; background: #555; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s ease; cursor: pointer; text-decoration: none;
+    }
+    .social-icon:hover { background: #777; }
+    .social-icon svg { width: 13px; height: 13px; fill: #fff; stroke: none; }
+    .footer-col h4 { font-size: 13px; color: #fff; margin-bottom: 14px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { text-decoration: none; font-size: 12px; color: #aaa; transition: color 0.2s ease; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #333; padding-top: 18px; font-size: 11px; color: #666; text-align: center; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+      .about-hero { padding: 60px 36px; }
+      .about-hero h1 { font-size: 36px; }
+      .mission-section { padding: 48px 24px; }
+      .mission-layout { grid-template-columns: 1fr; gap: 32px; }
+      .mission-img img { height: 260px; }
+      .values-section { padding: 48px 36px; margin: 0 10px 8px; }
+      .values-grid { grid-template-columns: 1fr 1fr; }
+      .values-grid .value-card:nth-child(3) { grid-column: 1 / -1; max-width: 380px; justify-self: center; }
+      .serve-section { padding: 48px 24px; }
+      .serve-grid { grid-template-columns: 1fr; gap: 16px; }
+      .serve-card-img { height: 220px; }
+      .tech-story-section { padding: 48px 36px; margin: 0 10px 8px; gap: 36px; flex-wrap: wrap; }
+      .tech-story-right { width: 100%; }
+      .cta-section { padding: 48px 36px; margin: 0 10px 8px; }
+      footer { padding: 40px 28px 24px; margin: 0 10px 0; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+
+    @media (max-width: 600px) {
+      :root { --r-section: 20px; --r-card: 16px; --side: 10px; }
+      nav { padding: 14px 18px; }
+      .nav-links { display: none; }
+      .btn-nav { display: none; }
+      .nav-hamburger { display: flex; }
+      .about-hero { padding: 48px 24px; }
+      .about-hero h1 { font-size: 28px; }
+      .mission-section { padding: 36px 18px; }
+      .values-section { padding: 36px 24px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .values-grid .value-card:nth-child(3) { grid-column: unset; max-width: 100%; }
+      .serve-section { padding: 36px 18px; }
+      .serve-grid { grid-template-columns: 1fr; }
+      .tech-story-section { flex-direction: column; padding: 36px 24px; }
+      .cta-section { padding: 48px 24px; }
+      .cta-btns { flex-direction: column; align-items: stretch; }
+      footer { padding: 36px 20px 20px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">MORMZ</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="index.html#faqs">FAQs</a></li>
+  </ul>
+  <button class="btn-nav" onclick="window.location.href='products.html'">Shop Now</button>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="index.html#features" onclick="closeMenu()">Features</a>
+  <a href="products.html" onclick="closeMenu()">Products</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="index.html#faqs" onclick="closeMenu()">FAQs</a>
+  <button class="btn-nav" onclick="closeMenu(); window.location.href='products.html'">Shop Now</button>
+</div>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="about-hero-inner reveal">
+    <p class="section-label" style="justify-content:center;display:block;">Our Story</p>
+    <h1>Premium Protection<br><em>For The Modern Woman.</em></h1>
+    <p>Mormz was born from a simple belief — that every woman deserves period care that truly understands her. Strong. Ambitious. Unstoppable.</p>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission-section" id="mission">
+  <div class="mission-layout">
+    <div class="mission-text reveal-left">
+      <p class="section-label">Our Mission</p>
+      <h2>Because Excellence Isn't Optional.</h2>
+      <p>Mormz was created for the woman who leads meetings, builds businesses, raises families, and refuses to let anything slow her down. <strong>She deserves period care that matches her standard.</strong></p>
+      <p>We set out to build a sanitary pad that doesn't just absorb — it protects, supports, and works with your body's natural rhythm. With our advanced 4-in-1 Functional Strip technology and targeted sizing for every stage of her cycle, comfort meets innovation in every layer.</p>
+      <p>From light days to heavy postpartum recovery, Mormz has a product built precisely for what your body needs. <strong>Your cycle. Covered.</strong></p>
+      <div class="mission-quote">
+        <p>"Her period care should match her standard. Choose Maximum Security — Choose Mormz Premium Protection."</p>
+      </div>
+    </div>
+    <div class="mission-img reveal-right">
+      <img src="img_career_woman.jpeg" alt="Mormz — She Leads Meetings. She Deserves Premium Protection."/>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <p class="section-label reveal">What We Stand For</p>
+  <h2 class="reveal">Our Values</h2>
+  <p class="sub reveal">Every decision we make comes back to these three commitments.</p>
+  <div class="values-grid">
+    <div class="value-card reveal reveal-delay-1">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h4>Protection First</h4>
+      <p>Every product we make is engineered to provide maximum protection — from leaks, bacteria, odour, and discomfort. No compromises.</p>
+    </div>
+    <div class="value-card reveal reveal-delay-2">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+      </div>
+      <h4>Innovation Always</h4>
+      <p>The 4-in-1 Functional Strip is not a gimmick — it's the result of real science applied to real women's needs. We invest in technology that works.</p>
+    </div>
+    <div class="value-card reveal reveal-delay-3">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h4>Women at the Centre</h4>
+      <p>Every size, every feature, every design decision starts with one question: does this make the modern woman's life better? If yes — we build it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section class="serve-section">
+  <p class="section-label reveal">Every Woman. Every Stage.</p>
+  <h2 class="reveal">Who Mormz Is For</h2>
+  <p class="sub reveal">Mormz Premium Protection is designed for every chapter of a woman's life.</p>
+  <div class="serve-grid">
+    <div class="serve-card reveal reveal-delay-1">
+      <div class="serve-card-img">
+        <img src="img_career_woman.jpeg" alt="The Ambitious Woman"/>
+        <div class="serve-card-overlay">
+          <h4>The Ambitious Woman</h4>
+          <p>She leads meetings, builds businesses, and deserves protection that keeps up with her. The Day 245mm is her everyday essential.</p>
+        </div>
+      </div>
+    </div>
+    <div class="serve-card reveal reveal-delay-2">
+      <div class="serve-card-img">
+        <img src="img_night_blue.jpeg" alt="The Woman Who Deserves Rest"/>
+        <div class="serve-card-overlay">
+          <h4>The Woman Who Deserves Rest</h4>
+          <p>Turn. Stretch. Sleep. No Stress. The Night 290mm is built for full, undisturbed rest — no leaks, no interruptions.</p>
+        </div>
+      </div>
+    </div>
+    <div class="serve-card reveal reveal-delay-3">
+      <div class="serve-card-img">
+        <img src="img_purple_pack.jpeg" alt="New Moms & Heavy Flow Days"/>
+        <div class="serve-card-overlay">
+          <h4>New Moms & Heavy Flow Days</h4>
+          <p>For new moms. For heavy flow days. For when regular isn't enough. The Purple 360mm provides maximum front-to-back coverage.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY STORY -->
+<section class="tech-story-section" id="technology">
+  <div class="tech-story-left reveal-left">
+    <p class="section-label">Advanced Science</p>
+    <h2>The Technology Behind Mormz</h2>
+    <p>At the heart of every Mormz pad is the proprietary 4-in-1 Functional Strip — a multi-layered innovation designed to do what ordinary pads simply cannot.</p>
+    <p>Each strip combines four distinct technologies working in harmony: Magnetism Technology for micro-circulation support, Anion Protection for odour control and freshness, Far-Infrared Comfort for gentle warmth and circulation, and Nano-Silver Protection for powerful antibacterial defence.</p>
+    <p>The result is a pad that doesn't just protect from the outside — it actively works with your body for total comfort throughout your cycle.</p>
+    <div class="tech-story-pills">
+      <span class="tech-pill">Magnetism Technology</span>
+      <span class="tech-pill">Anion Protection</span>
+      <span class="tech-pill">Far-Infrared Comfort</span>
+      <span class="tech-pill">Nano-Silver Shield</span>
+    </div>
+  </div>
+  <div class="tech-story-right reveal-right">
+    <img src="img_4in1_strip.jpeg" alt="Mormz 4-in-1 Functional Strip — Powered by Science"/>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-section">
+  <p class="section-label reveal" style="display:block;text-align:center;">Ready?</p>
+  <h2 class="reveal">Choose Maximum Security.</h2>
+  <p class="reveal">Your body does something incredible every month. You deserve protection that understands that. Choose Mormz Premium Protection — available now.</p>
+  <div class="cta-btns reveal">
+    <button class="btn-cta-primary" onclick="window.location.href='products.html'">Shop Products</button>
+    <button class="btn-cta-secondary" onclick="window.location.href='index.html#features'">Learn More</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>MORMZ</h3>
+      <p>Mormz Premium Protection for the Modern day woman.</p>
+      <div class="footer-socials">
+        <a class="social-icon" href="https://www.facebook.com/momsbeauty.parlour" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.269h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        </a>
+        <a class="social-icon" href="https://www.instagram.com/momsbeautyparlour1?igsh=MXZkcDBwcTZrOWptMg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.9 4.9 0 011.772 1.153 4.9 4.9 0 011.153 1.772c.163.46.35 1.26.403 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.9 4.9 0 01-1.153 1.772 4.9 4.9 0 01-1.772 1.153c-.46.163-1.26.35-2.43.403-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.9 4.9 0 01-1.772-1.153A4.9 4.9 0 012.4 19.28c-.163-.46-.35-1.26-.403-2.43C1.939 15.584 1.927 15.204 1.927 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43A4.9 4.9 0 013.553 3.02 4.9 4.9 0 015.325 1.867c.46-.163 1.26-.35 2.43-.403C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.775.131 4.902.333 4.14.63A7.07 7.07 0 001.63 2.14 7.07 7.07 0 00.63 4.14C.333 4.902.131 5.775.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.278.261 2.15.558 2.912a7.07 7.07 0 001.51 2.51 7.07 7.07 0 002.51 1.51c.763.297 1.635.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.059 2.15-.261 2.912-.558a7.07 7.07 0 002.51-1.51 7.07 7.07 0 001.51-2.51c.297-.763.499-1.635.558-2.913.058-1.28.072-1.689.072-4.947s-.014-3.667-.072-4.948c-.059-1.277-.261-2.15-.558-2.912A7.07 7.07 0 0021.86 1.63 7.07 7.07 0 0019.86.63C19.098.333 18.226.131 16.948.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.016 3.016 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="products.html">Mormz Day (245mm)</a></li>
+        <li><a href="products.html">Mormz Night (290mm)</a></li>
+        <li><a href="products.html">Mormz Purple (360mm)</a></li>
+        <li><a href="products.html">Full Cycle Bundle</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="about.html#mission">Our Mission</a></li>
+        <li><a href="about.html#technology">Technology</a></li>
+        <li><a href="#">Sustainability</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="index.html#faqs">FAQs</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Find a Stockist</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">2026 Mormz All rights reserved.</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  document.querySelectorAll('.about-hero .reveal').forEach(el => el.classList.add('visible'));
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mormz – Shop Our Products</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,600;1,700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:       #FFD6FF;
+      --lavender:   #E7C6FF;
+      --purple:     #C8B6FF;
+      --periwinkle: #B8C0FF;
+      --blue:       #BBD0FF;
+      --white:      #FFFFFF;
+      --off-white:  #F2F2F2;
+      --black:      #414141;
+      --black2:     #757272;
+      --border:     #EFEFEF;
+      --r-section:  30px;
+      --r-card:     20px;
+      --side:       15px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      color: #595959;
+      letter-spacing: -0.02em;
+      background: #fff;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--black);
+    }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 40px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: #fff; z-index: 100; gap: 16px;
+    }
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 15px;
+      letter-spacing: -0.04em; color: var(--black); flex-shrink: 0; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 13px; color: #595959;
+      letter-spacing: -0.02em; transition: color 0.2s ease; white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--purple); font-weight: 600; }
+    .btn-nav {
+      background: var(--pink); border: none; border-radius: 50px; padding: 9px 20px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600;
+      color: var(--black); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .btn-nav:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,214,255,0.5); }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all 0.3s ease; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile-menu {
+      display: none; position: fixed; top: 53px; left: 0; right: 0;
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 20px 24px; z-index: 99; flex-direction: column; gap: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a { text-decoration: none; font-size: 14px; color: #595959; transition: color 0.2s ease; }
+    .nav-mobile-menu a:hover { color: var(--purple); }
+    .nav-mobile-menu .btn-nav { width: 100%; text-align: center; }
+
+    /* ─── HERO BANNER ─── */
+    .products-hero {
+      background: linear-gradient(135deg, var(--periwinkle) 0%, var(--lavender) 60%, var(--pink) 100%);
+      border-radius: var(--r-section);
+      margin: 8px var(--side);
+      padding: 80px 56px;
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+      overflow: hidden; position: relative;
+      min-height: 320px;
+    }
+    .products-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .products-hero-text { max-width: 480px; position: relative; z-index: 1; }
+    .products-hero h1 { font-size: 42px; line-height: 1.1; color: var(--black); margin-bottom: 12px; }
+    .products-hero h1 em { color: var(--white); font-style: italic; }
+    .products-hero p { font-size: 13px; color: #595959; line-height: 1.65; max-width: 360px; margin-bottom: 24px; }
+    .hero-badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-badge {
+      background: rgba(255,255,255,0.7); border-radius: 50px;
+      padding: 7px 16px; font-size: 11px; font-weight: 600; color: var(--black);
+      backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.5);
+    }
+    .products-hero-img {
+      flex-shrink: 0; width: 320px; height: 260px;
+      border-radius: 20px; overflow: hidden; position: relative; z-index: 1;
+    }
+    .products-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-family: 'Open Sans', sans-serif; font-size: 11px; color: var(--purple);
+      letter-spacing: 0.04em; margin-bottom: 4px; font-weight: 600; text-transform: uppercase;
+    }
+
+    /* ─── 3 SIZES SECTION ─── */
+    .sizes-section { padding: 60px 40px; }
+    .sizes-section h2 { font-size: 28px; margin-bottom: 6px; }
+    .sizes-section > .sub { font-size: 13px; color: #595959; margin-bottom: 40px; }
+    .sizes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    .size-card {
+      border-radius: var(--r-card); overflow: hidden;
+      border: 1.5px solid var(--border);
+      display: flex; flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .size-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(184,192,255,0.22); }
+    .size-card-img {
+      height: 200px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .size-card:nth-child(1) .size-card-img { background: linear-gradient(135deg, var(--pink) 0%, var(--lavender) 100%); }
+    .size-card:nth-child(2) .size-card-img { background: linear-gradient(135deg, var(--blue) 0%, var(--periwinkle) 100%); }
+    .size-card:nth-child(3) .size-card-img { background: linear-gradient(135deg, var(--lavender) 0%, var(--purple) 100%); }
+    .size-card-img img { width: 100%; height: 100%; object-fit: contain; padding: 16px; }
+    .size-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(255,255,255,0.85); border-radius: 50px;
+      padding: 4px 12px; font-size: 10px; font-weight: 700; color: var(--black);
+      backdrop-filter: blur(6px);
+    }
+    .size-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .size-card-name { font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: var(--black); }
+    .size-card-mm { font-size: 11px; color: var(--purple); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .size-card-desc { font-size: 12px; color: #595959; line-height: 1.6; flex: 1; margin-top: 4px; }
+    .size-features { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+    .size-features li { font-size: 11.5px; color: #595959; display: flex; align-items: center; gap: 7px; }
+    .size-features li::before {
+      content: '✓'; display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; background: var(--periwinkle);
+      border-radius: 50%; font-size: 9px; font-weight: 700; flex-shrink: 0; color: var(--black);
+    }
+    .size-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+    .size-price { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: var(--black); }
+    .btn-size-buy {
+      background: var(--periwinkle); border: none; border-radius: 50px; padding: 9px 20px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; color: var(--black);
+      cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-size-buy:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,192,255,0.45); }
+
+    /* ─── BUNDLE DEAL ─── */
+    .bundle-section {
+      background: var(--blue);
+      border-radius: var(--r-section);
+      margin: 0 var(--side) 8px;
+      padding: 60px 56px;
+      display: flex; align-items: center; gap: 60px;
+    }
+    .bundle-left { flex: 1; }
+    .bundle-left h2 { font-size: 26px; margin-bottom: 10px; }
+    .bundle-left p { font-size: 13px; color: #595959; line-height: 1.65; margin-bottom: 20px; max-width: 380px; }
+    .bundle-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+    .bundle-tag {
+      background: var(--white); border-radius: 50px; padding: 6px 14px;
+      font-size: 11px; font-weight: 600; color: var(--black);
+    }
+    .btn-bundle {
+      background: var(--pink); border: none; border-radius: 50px; padding: 12px 28px;
+      font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--black);
+      cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block;
+    }
+    .btn-bundle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,214,255,0.5); }
+    .bundle-right { flex-shrink: 0; width: 320px; border-radius: var(--r-card); overflow: hidden; }
+    .bundle-right img { width: 100%; height: 220px; object-fit: contain; background: rgba(255,255,255,0.4); padding: 12px; border-radius: var(--r-card); }
+
+    /* ─── 4-in-1 TECH SECTION ─── */
+    .tech-section { padding: 60px 40px; }
+    .tech-section h2 { font-size: 28px; margin-bottom: 6px; }
+    .tech-section > .sub { font-size: 13px; color: #595959; margin-bottom: 40px; }
+    .tech-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
+    .tech-img { border-radius: var(--r-card); overflow: hidden; }
+    .tech-img img { width: 100%; height: 380px; object-fit: contain; background: linear-gradient(135deg, var(--blue) 0%, var(--periwinkle) 100%); padding: 20px; border-radius: var(--r-card); }
+    .tech-list { display: flex; flex-direction: column; gap: 18px; }
+    .tech-item {
+      background: var(--off-white); border-radius: var(--r-card); padding: 20px 22px;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .tech-item:hover { transform: translateX(6px); box-shadow: 0 6px 20px rgba(184,192,255,0.2); }
+    .tech-num {
+      width: 32px; height: 32px; background: var(--periwinkle);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+      color: var(--black); flex-shrink: 0;
+    }
+    .tech-info h4 { font-size: 13px; margin-bottom: 4px; }
+    .tech-info p { font-size: 12px; color: #595959; line-height: 1.55; }
+
+    /* ─── HOW TO ORDER ─── */
+    .order-section {
+      background: var(--pink);
+      border-radius: var(--r-section);
+      margin: 0 var(--side) 8px;
+      padding: 60px 56px;
+    }
+    .order-section h2 { font-size: 26px; margin-bottom: 6px; text-align: center; }
+    .order-section > .sub { font-size: 13px; color: #595959; text-align: center; margin-bottom: 40px; }
+    .order-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .order-step {
+      background: var(--white); border-radius: var(--r-card); padding: 24px 18px;
+      text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center;
+      transition: transform 0.25s ease;
+    }
+    .order-step:hover { transform: translateY(-4px); }
+    .step-num {
+      width: 40px; height: 40px; background: var(--periwinkle);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: var(--black);
+    }
+    .order-step h4 { font-size: 13px; }
+    .order-step p { font-size: 12px; color: #595959; line-height: 1.55; }
+    .order-cta { text-align: center; margin-top: 36px; }
+    .btn-order {
+      background: var(--periwinkle); border: none; border-radius: 50px; padding: 13px 32px;
+      font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--black);
+      cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-order:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(184,192,255,0.45); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--black);
+      border-radius: var(--r-section) var(--r-section) 0 0;
+      margin: 0 var(--side) 0;
+      padding: 50px 48px 28px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+    .footer-brand h3 { font-size: 15px; color: #fff; margin-bottom: 8px; }
+    .footer-brand p { font-size: 12px; color: #aaa; line-height: 1.65; margin-bottom: 16px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .social-icon {
+      width: 28px; height: 28px; background: #555; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s ease; cursor: pointer; text-decoration: none;
+    }
+    .social-icon:hover { background: #777; }
+    .social-icon svg { width: 13px; height: 13px; fill: #fff; stroke: none; }
+    .footer-col h4 { font-size: 13px; color: #fff; margin-bottom: 14px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { text-decoration: none; font-size: 12px; color: #aaa; transition: color 0.2s ease; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #333; padding-top: 18px; font-size: 11px; color: #666; text-align: center; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+      .products-hero { padding: 60px 36px; margin: 8px 10px; }
+      .products-hero h1 { font-size: 32px; }
+      .products-hero-img { width: 220px; height: 180px; }
+      .sizes-section { padding: 48px 24px; }
+      .sizes-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .sizes-grid .size-card:nth-child(3) { grid-column: 1 / -1; max-width: 380px; justify-self: center; }
+      .bundle-section { padding: 48px 36px; margin: 0 10px 8px; gap: 36px; flex-wrap: wrap; }
+      .bundle-right { width: 100%; }
+      .tech-section { padding: 48px 24px; }
+      .tech-layout { grid-template-columns: 1fr; gap: 32px; }
+      .order-section { padding: 48px 36px; margin: 0 10px 8px; }
+      .order-steps { grid-template-columns: repeat(2, 1fr); }
+      footer { padding: 40px 28px 24px; margin: 0 10px 0; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+
+    @media (max-width: 600px) {
+      :root { --r-section: 20px; --r-card: 16px; --side: 10px; }
+      nav { padding: 14px 18px; }
+      .nav-links { display: none; }
+      .btn-nav { display: none; }
+      .nav-hamburger { display: flex; }
+      .products-hero { flex-direction: column; padding: 44px 24px 36px; min-height: unset; }
+      .products-hero h1 { font-size: 26px; }
+      .products-hero-img { width: 100%; height: 200px; }
+      .sizes-grid { grid-template-columns: 1fr; }
+      .sizes-grid .size-card:nth-child(3) { grid-column: unset; max-width: 100%; }
+      .bundle-section { flex-direction: column; padding: 36px 24px; gap: 24px; }
+      .bundle-right { width: 100%; }
+      .tech-layout { grid-template-columns: 1fr; }
+      .order-steps { grid-template-columns: 1fr 1fr; }
+      footer { padding: 36px 20px 20px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">MORMZ</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="products.html" class="active">Products</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#faqs">FAQs</a></li>
+  </ul>
+  <button class="btn-nav" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order Now</button>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="index.html#features" onclick="closeMenu()">Features</a>
+  <a href="products.html" onclick="closeMenu()">Products</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="index.html#faqs" onclick="closeMenu()">FAQs</a>
+  <button class="btn-nav" onclick="closeMenu(); document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order Now</button>
+</div>
+
+<!-- HERO -->
+<section class="products-hero">
+  <div class="products-hero-text reveal-left">
+    <h1>3 Sizes.<br>One Powerful <em>Technology.</em></h1>
+    <p>Every Mormz pad is powered by the same 4-in-1 Functional Strip — Magnetism Technology, Anion Protection, Far-Infrared Comfort, and Nano-Silver Protection. Choose the size that fits your day.</p>
+    <div class="hero-badge-row">
+      <span class="hero-badge">✓ Advanced Hygiene Tech</span>
+      <span class="hero-badge">✓ Premium Absorbency</span>
+      <span class="hero-badge">✓ All-Day Confidence</span>
+    </div>
+  </div>
+  <div class="products-hero-img reveal-right">
+    <img src="img_3sizes.jpeg" alt="Mormz 3 Sizes — Day, Night, Over-Length"/>
+  </div>
+</section>
+
+<!-- 3 SIZES -->
+<section class="sizes-section" id="sizes">
+  <p class="section-label reveal">Our Range</p>
+  <h2 class="reveal">Choose Your Coverage</h2>
+  <p class="sub reveal">Your cycle. Covered — whether it's a light day at the office, a full night's rest, or postpartum recovery.</p>
+  <div class="sizes-grid">
+
+    <!-- Day -->
+    <div class="size-card reveal reveal-delay-1">
+      <div class="size-card-img">
+        <img src="img_career_woman.jpeg" alt="Mormz Day 245mm"/>
+        <span class="size-badge">Day Use</span>
+      </div>
+      <div class="size-card-body">
+        <div class="size-card-name">Mormz Day</div>
+        <div class="size-card-mm">245mm · Regular</div>
+        <p class="size-card-desc">Designed for the active modern woman. Slim, discreet coverage that moves with you through meetings, commutes, and everything in between.</p>
+        <ul class="size-features">
+          <li>Up to 8 hours wear</li>
+          <li>Soft top-sheet for all-day comfort</li>
+          <li>4-in-1 Functional Strip</li>
+          <li>10 pads per pack</li>
+        </ul>
+        <div class="size-price-row">
+          <span class="size-price">₦ 2,500</span>
+          <button class="btn-size-buy">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Night -->
+    <div class="size-card reveal reveal-delay-2">
+      <div class="size-card-img">
+        <img src="img_night_blue.jpeg" alt="Mormz Night 290mm"/>
+        <span class="size-badge">Night Use</span>
+      </div>
+      <div class="size-card-body">
+        <div class="size-card-name">Mormz Night</div>
+        <div class="size-card-mm">290mm · Night</div>
+        <p class="size-card-desc">Turn. Stretch. Sleep. No Stress. Extended back-to-front coverage lets you rest fully without worrying. Premium Protection for the Modern Woman.</p>
+        <ul class="size-features">
+          <li>Extended overnight coverage</li>
+          <li>Anti-leak side barriers</li>
+          <li>4-in-1 Functional Strip</li>
+          <li>8 pads per pack</li>
+        </ul>
+        <div class="size-price-row">
+          <span class="size-price">₦ 2,800</span>
+          <button class="btn-size-buy">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Over-Length / Purple -->
+    <div class="size-card reveal reveal-delay-3">
+      <div class="size-card-img">
+        <img src="img_purple_pack.jpeg" alt="Mormz Over-Length 360mm"/>
+        <span class="size-badge">Heavy Flow</span>
+      </div>
+      <div class="size-card-body">
+        <div class="size-card-name">Mormz Purple</div>
+        <div class="size-card-mm">360mm · Over-Length</div>
+        <p class="size-card-desc">For New Moms. For Heavy Flow Days. For When Regular Isn't Enough. Maximum front-to-back coverage — confidence, comfort, and peace of mind when you need it most.</p>
+        <ul class="size-features">
+          <li>Maximum 360mm coverage</li>
+          <li>Designed for heavy flow & postpartum</li>
+          <li>4-in-1 Functional Strip</li>
+          <li>4 pads per pack</li>
+        </ul>
+        <div class="size-price-row">
+          <span class="size-price">₦ 3,200</span>
+          <button class="btn-size-buy">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BUNDLE DEAL -->
+<section class="bundle-section">
+  <div class="bundle-left reveal-left">
+    <p class="section-label">Best Value</p>
+    <h2>The Full Cycle Bundle</h2>
+    <p>Get all three sizes in one convenient pack. Day protection, night coverage, and heavy-flow security — everything you need from start to finish. Your cycle, completely covered.</p>
+    <div class="bundle-tags">
+      <span class="bundle-tag">Day (245mm)</span>
+      <span class="bundle-tag">Night (290mm)</span>
+      <span class="bundle-tag">Purple (360mm)</span>
+    </div>
+    <div style="margin-bottom:8px;">
+      <span style="font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:var(--black);">₦ 7,500</span>
+      <span style="font-size:12px;color:#595959;margin-left:8px;text-decoration:line-through;">₦ 8,500</span>
+      <span style="font-size:11px;font-weight:700;color:#8060c0;margin-left:8px;">Save ₦1,000</span>
+    </div>
+    <button class="btn-bundle">Get the Bundle</button>
+  </div>
+  <div class="bundle-right reveal-right">
+    <img src="img_3sizes.jpeg" alt="Full Cycle Bundle — All 3 Mormz packs"/>
+  </div>
+</section>
+
+<!-- 4-IN-1 TECHNOLOGY -->
+<section class="tech-section" id="technology">
+  <p class="section-label reveal">What's Inside</p>
+  <h2 class="reveal">Powered By The 4-in-1 Functional Strip</h2>
+  <p class="sub reveal">Every Mormz pad — in every size — is built around the same advanced strip technology. Advanced Hygiene. Maximum Protection.</p>
+  <div class="tech-layout">
+    <div class="tech-img reveal-left">
+      <img src="img_4in1_strip.jpeg" alt="Mormz 4-in-1 Functional Strip diagram"/>
+    </div>
+    <div class="tech-list reveal-right">
+      <div class="tech-item">
+        <div class="tech-num">1</div>
+        <div class="tech-info">
+          <h4>Magnetism Technology</h4>
+          <p>Designed to support comfort and improve micro-circulation during your cycle, so your body feels supported from the inside out.</p>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">2</div>
+        <div class="tech-info">
+          <h4>Anion Protection</h4>
+          <p>Helps neutralize odour and maintain freshness throughout the day. Stay confident no matter how long your day runs.</p>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">3</div>
+        <div class="tech-info">
+          <h4>Far-Infrared Comfort</h4>
+          <p>Gently supports warmth and promotes better circulation during your period. Comfort that works with your body, not against it.</p>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-num">4</div>
+        <div class="tech-info">
+          <h4>Nano-Silver Protection</h4>
+          <p>Powerful antibacterial support to help maintain a cleaner, healthier environment throughout your cycle — every single day.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO ORDER -->
+<section class="order-section" id="order">
+  <p class="section-label reveal" style="text-align:center;">Easy Ordering</p>
+  <h2 class="reveal">How to Order</h2>
+  <p class="sub reveal">Getting Mormz delivered to your door is simple. Choose your size, place your order, and we handle the rest.</p>
+  <div class="order-steps">
+    <div class="order-step reveal reveal-delay-1">
+      <div class="step-num">1</div>
+      <h4>Choose Your Size</h4>
+      <p>Select from Day (245mm), Night (290mm), or Purple Over-Length (360mm) — or grab the Full Cycle Bundle.</p>
+    </div>
+    <div class="order-step reveal reveal-delay-2">
+      <div class="step-num">2</div>
+      <h4>Place Your Order</h4>
+      <p>Order online through our website or reach us directly on WhatsApp or Instagram @momsbeautypalour1.</p>
+    </div>
+    <div class="order-step reveal reveal-delay-3">
+      <div class="step-num">3</div>
+      <h4>Fast Delivery</h4>
+      <p>Standard delivery 3–5 business days. Express delivery available in Lagos, Abuja & Port Harcourt within 24 hours.</p>
+    </div>
+    <div class="order-step reveal reveal-delay-4">
+      <div class="step-num">4</div>
+      <h4>Subscribe & Save</h4>
+      <p>Join our subscription plan for 15% off every order. Customize your frequency — weekly, bi-weekly, or monthly.</p>
+    </div>
+  </div>
+  <div class="order-cta">
+    <button class="btn-order" onclick="document.getElementById('sizes').scrollIntoView({behavior:'smooth'})">Shop All Products</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>MORMZ</h3>
+      <p>Mormz Premium Protection for the Modern day woman.</p>
+      <div class="footer-socials">
+        <a class="social-icon" href="https://www.facebook.com/momsbeauty.parlour" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.269h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        </a>
+        <a class="social-icon" href="https://www.instagram.com/momsbeautyparlour1?igsh=MXZkcDBwcTZrOWptMg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.9 4.9 0 011.772 1.153 4.9 4.9 0 011.153 1.772c.163.46.35 1.26.403 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.9 4.9 0 01-1.153 1.772 4.9 4.9 0 01-1.772 1.153c-.46.163-1.26.35-2.43.403-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.9 4.9 0 01-1.772-1.153A4.9 4.9 0 012.4 19.28c-.163-.46-.35-1.26-.403-2.43C1.939 15.584 1.927 15.204 1.927 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43A4.9 4.9 0 013.553 3.02 4.9 4.9 0 015.325 1.867c.46-.163 1.26-.35 2.43-.403C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.775.131 4.902.333 4.14.63A7.07 7.07 0 001.63 2.14 7.07 7.07 0 00.63 4.14C.333 4.902.131 5.775.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.278.261 2.15.558 2.912a7.07 7.07 0 001.51 2.51 7.07 7.07 0 002.51 1.51c.763.297 1.635.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.059 2.15-.261 2.912-.558a7.07 7.07 0 002.51-1.51 7.07 7.07 0 001.51-2.51c.297-.763.499-1.635.558-2.913.058-1.28.072-1.689.072-4.947s-.014-3.667-.072-4.948c-.059-1.277-.261-2.15-.558-2.912A7.07 7.07 0 0021.86 1.63 7.07 7.07 0 0019.86.63C19.098.333 18.226.131 16.948.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.016 3.016 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#">Mormz Day (245mm)</a></li>
+        <li><a href="#">Mormz Night (290mm)</a></li>
+        <li><a href="#">Mormz Purple (360mm)</a></li>
+        <li><a href="#">Full Cycle Bundle</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="about.html#mission">Our Mission</a></li>
+        <li><a href="about.html#technology">Technology</a></li>
+        <li><a href="#">Sustainability</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="index.html#faqs">FAQs</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Find a Stockist</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">2026 Mormz All rights reserved.</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+  document.querySelectorAll('.products-hero .reveal-left, .products-hero .reveal-right').forEach(el => el.classList.add('visible'));
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mormz – There is a product for every flow.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,600;1,700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:       #FFD6FF;
+      --lavender:   #E7C6FF;
+      --purple:     #C8B6FF;
+      --periwinkle: #B8C0FF;
+      --blue:       #BBD0FF;
+      --white:      #FFFFFF;
+      --off-white:  #F2F2F2;
+      --black:      #414141;
+      --black2:     #757272;
+      --border:     #EFEFEF;
+      --r-section:  30px;
+      --r-card:     20px;
+      --side:       15px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      color: #595959;
+      letter-spacing: -0.02em;
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--black);
+    }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 100;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.04em;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 13px;
+      color: #595959;
+      letter-spacing: -0.02em;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--purple); }
+    .btn-nav {
+      background: var(--pink);
+      border: none;
+      border-radius: 50px;
+      padding: 9px 20px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-nav:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,214,255,0.5); }
+
+    /* Mobile hamburger */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--black);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      top: 53px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a {
+      text-decoration: none;
+      font-size: 14px;
+      color: #595959;
+      letter-spacing: -0.02em;
+      transition: color 0.2s ease;
+    }
+    .nav-mobile-menu a:hover { color: var(--purple); }
+    .nav-mobile-menu .btn-nav { width: 100%; text-align: center; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--periwinkle);
+      border-radius: var(--r-section);
+      margin: 8px var(--side);
+      padding: 100px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      min-height: 380px;
+      overflow: hidden;
+    }
+    .hero-text { max-width: 460px; }
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+    .hero h1 .flow { color: var(--pink); font-style: italic; }
+    .hero p {
+      font-size: 13px;
+      color: #595959;
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 340px;
+    }
+    .hero-btns { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-hero-primary {
+      background: var(--pink);
+      border: none;
+      border-radius: 50px;
+      padding: 11px 24px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,214,255,0.6); }
+    .btn-hero-secondary {
+      background: transparent;
+      border: 1.5px solid var(--pink);
+      border-radius: 50px;
+      padding: 11px 24px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .btn-hero-secondary:hover { background: rgba(255,214,255,0.2); transform: translateY(-2px); }
+    .hero-visual { flex-shrink: 0; width: 280px; height: 240px; }
+    .hero-visual svg { width: 100%; height: 100%; }
+
+    /* ─── FEATURES ─── */
+    .features-section { padding: 36px 40px 60px; }
+    .section-label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      color: var(--purple);
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+    .features-section h2 { font-size: 30px; margin-bottom: 6px; }
+    .features-section > .sub { font-size: 13px; color: #595959; margin-bottom: 36px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      padding: 24px 20px;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: default;
+    }
+    .feature-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(184,192,255,0.25);
+    }
+    .feature-icon {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .feature-icon svg { width: 28px; height: 28px; stroke: var(--purple); fill: none; stroke-width: 1.5; }
+    .feature-item h4 { font-size: 13px; }
+    .feature-item p { font-size: 12px; color: #595959; line-height: 1.5; }
+
+    /* ─── NEGATIVE ION STRIPS ─── */
+    .ions-section {
+      background: var(--blue);
+      border-radius: var(--r-section);
+      margin: 0 var(--side) 8px;
+      padding: 60px 56px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .ions-left { flex: 0 0 280px; }
+    .ions-left h2 { font-size: 22px; margin-bottom: 10px; }
+    .ions-left p { font-size: 13px; color: #595959; line-height: 1.65; }
+    .ions-pad-wrap { position: relative; width: 220px; height: 220px; margin-top: 28px; }
+    .ions-pad-wrap svg { width: 220px; height: 220px; }
+
+    .ions-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ion-chip {
+      background: var(--pink);
+      border-radius: var(--r-card);
+      padding: 18px 24px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      color: var(--black);
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, padding 0.3s ease;
+      overflow: hidden;
+    }
+    .ion-chip:hover {
+      transform: translateX(6px);
+      box-shadow: 0 6px 20px rgba(255,214,255,0.45);
+      padding: 22px 24px;
+    }
+    .ion-chip-title { font-weight: 600; }
+    .ion-chip-sub {
+      font-size: 12px;
+      color: #595959;
+      margin-top: 0;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+      line-height: 1.5;
+    }
+    .ion-chip:hover .ion-chip-sub { max-height: 80px; margin-top: 8px; opacity: 1; }
+
+    /* ─── COLLECTION ─── */
+    .collection-section { padding: 60px 40px; }
+    .collection-section h2 { font-size: 30px; margin-bottom: 6px; }
+    .collection-section > .sub { font-size: 13px; color: #595959; margin-bottom: 32px; }
+    .collection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .product-card-img { height: 170px; }
+    .product-card:nth-child(1) .product-card-img { background: var(--pink); }
+    .product-card:nth-child(2) .product-card-img { background: var(--lavender); }
+    .product-card:nth-child(3) .product-card-img { background: var(--blue); }
+    .product-card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .product-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .product-name { font-size: 14px; font-weight: bold; }
+    .product-price { font-size: 14px; font-weight: bold; }
+    .product-features { list-style: none; display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
+    .product-features li { font-size: 12px; color: #595959; }
+    .btn-buy {
+      background: var(--periwinkle);
+      border: none;
+      border-radius: 50px;
+      padding: 11px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-buy:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(184,192,255,0.5); }
+
+    /* ─── REVIEWS ─── */
+    .reviews-section {
+      background: var(--pink);
+      border-radius: var(--r-section);
+      margin: 0 var(--side) 8px;
+      padding: 50px 48px;
+    }
+    .reviews-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; gap: 16px; }
+    .reviews-header h2 { font-size: 22px; margin-bottom: 4px; }
+    .reviews-header p { font-size: 13px; color: #595959; }
+    .reviews-rating { text-align: right; flex-shrink: 0; }
+    .reviews-rating .score {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--black);
+    }
+    .reviews-rating .sub { font-size: 12px; color: #595959; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .review-card {
+      background: var(--white);
+      border-radius: var(--r-card);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .review-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(200,182,255,0.25); }
+    .review-stars { display: flex; gap: 3px; }
+    .review-stars span { font-size: 13px; color: var(--purple); -webkit-text-stroke: 1px #a090c0; }
+    .review-text { font-size: 11.5px; color: #595959; line-height: 1.6; }
+    .review-author { display: flex; align-items: center; gap: 9px; margin-top: auto; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--lavender); flex-shrink: 0; }
+    .author-name { font-size: 12px; font-weight: bold; }
+    .author-title { font-size: 11px; color: #595959; }
+
+    /* ─── FAQ ─── */
+    .faq-section { padding: 60px 40px; }
+    .faq-section h2 { font-size: 24px; margin-bottom: 6px; }
+    .faq-section > .sub { font-size: 13px; color: #595959; margin-bottom: 28px; }
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+    .faq-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); }
+    .faq-header {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+    .faq-question { font-size: 13px; color: #595959; }
+    .faq-icon {
+      width: 28px; height: 28px;
+      background: var(--periwinkle);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--purple); }
+    .faq-icon svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 20px;
+      font-size: 12.5px;
+      color: #595959;
+      line-height: 1.65;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; padding: 0 20px 18px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--black);
+      border-radius: var(--r-section) var(--r-section) 0 0;
+      margin: 0 var(--side) 0;
+      padding: 50px 48px 28px;
+    }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+    .footer-brand h3 { font-size: 15px; color: #fff; margin-bottom: 8px; }
+    .footer-brand p { font-size: 12px; color: #aaa; line-height: 1.65; margin-bottom: 16px; }
+    .footer-socials { display: flex; gap: 8px; }
+    .social-icon {
+      width: 28px; height: 28px;
+      background: #555;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .social-icon:hover { background: #777; }
+    .social-icon svg { width: 13px; height: 13px; fill: #fff; stroke: none; }
+    .footer-col h4 { font-size: 13px; color: #fff; margin-bottom: 14px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { text-decoration: none; font-size: 12px; color: #aaa; transition: color 0.2s ease; }
+    .footer-col a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid #333; padding-top: 18px; font-size: 11px; color: #666; text-align: center; }
+
+
+    /* ════════════════════════════════════════
+       TABLET — max-width: 900px
+    ════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+
+      /* Hero */
+      .hero {
+        padding: 60px 36px;
+        margin: 8px 10px;
+        gap: 28px;
+      }
+      .hero h1 { font-size: 36px; }
+      .hero-visual { width: 200px; height: 172px; }
+
+      /* Features */
+      .features-section { padding: 36px 24px 48px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+      /* Ions */
+      .ions-section {
+        padding: 48px 36px;
+        margin: 0 10px 8px;
+        gap: 40px;
+      }
+      .ions-left { flex: 0 0 220px; }
+      .ions-pad-wrap { width: 170px; height: 170px; }
+      .ions-pad-wrap svg { width: 170px; height: 170px; }
+
+      /* Collection */
+      .collection-section { padding: 48px 24px; }
+      .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      /* 3rd card full width on tablet */
+      .collection-grid .product-card:nth-child(3) { grid-column: 1 / -1; max-width: 360px; justify-self: center; }
+
+      /* Reviews */
+      .reviews-section { padding: 40px 28px; margin: 0 10px 8px; }
+      .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* FAQ */
+      .faq-section { padding: 48px 24px; }
+
+      /* Footer */
+      footer { padding: 40px 28px 24px; margin: 0 10px 0; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+
+
+    /* ════════════════════════════════════════
+       MOBILE — max-width: 600px
+    ════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      :root {
+        --r-section: 20px;
+        --r-card: 16px;
+        --side: 10px;
+      }
+
+      /* Nav */
+      nav {
+        padding: 14px 18px;
+      }
+      .nav-links { display: none; }
+      .btn-nav { display: none; }
+      .nav-hamburger { display: flex; }
+
+      /* Hero */
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 44px 24px 36px;
+        margin: 8px var(--side);
+        min-height: unset;
+        gap: 28px;
+      }
+      .hero h1 {
+        font-size: 30px;
+        line-height: 1.15;
+      }
+      .hero p { max-width: 100%; }
+      .hero-btns { flex-direction: column; align-items: stretch; gap: 10px; }
+      .btn-hero-primary,
+      .btn-hero-secondary { text-align: center; }
+      .hero-visual {
+        width: 100%;
+        height: 180px;
+        align-self: center;
+      }
+
+      /* Features */
+      .features-section { padding: 32px 18px 40px; }
+      .features-section h2 { font-size: 22px; }
+      .features-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .feature-item { padding: 18px 14px; }
+
+      /* Ions */
+      .ions-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 36px 24px;
+        margin: 0 var(--side) 8px;
+        gap: 28px;
+      }
+      .ions-left { flex: none; width: 100%; }
+      .ions-left h2 { font-size: 18px; }
+      .ions-pad-wrap {
+        width: 140px;
+        height: 140px;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .ions-pad-wrap svg { width: 140px; height: 140px; }
+      .ions-right { width: 100%; }
+      .ion-chip { padding: 14px 18px; }
+      .ion-chip:hover { transform: none; padding: 18px 18px; }
+
+      /* Collection */
+      .collection-section { padding: 36px 18px; }
+      .collection-section h2 { font-size: 22px; }
+      .collection-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .collection-grid .product-card:nth-child(3) {
+        grid-column: unset;
+        max-width: 100%;
+        justify-self: auto;
+      }
+
+      /* Reviews */
+      .reviews-section {
+        padding: 32px 20px;
+        margin: 0 var(--side) 8px;
+      }
+      .reviews-header { flex-direction: column; gap: 10px; }
+      .reviews-header h2 { font-size: 18px; }
+      .reviews-rating { text-align: left; }
+      .reviews-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      /* FAQ */
+      .faq-section { padding: 36px 18px; }
+      .faq-section h2 { font-size: 18px; }
+      .faq-header { padding: 16px; }
+
+      /* Footer */
+      footer {
+        padding: 36px 20px 20px;
+        margin: 0 var(--side) 0;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .footer-brand { margin-bottom: 0; }
+
+      /* Tone down animations on mobile */
+      .reveal-left { transform: translateX(0); opacity: 0; }
+      .reveal-right { transform: translateX(0); opacity: 0; }
+    }
+
+    /* very small devices */
+    @media (max-width: 360px) {
+      .hero h1 { font-size: 26px; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">MORMZ</span>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="#faqs">FAQs</a></li>
+  </ul>
+  <button class="btn-nav" onclick="window.location.href='products.html'">Shop Now</button>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="#features" onclick="closeMenu()">Features</a>
+  <a href="#collection" onclick="closeMenu()">Collection</a>
+  <a href="products.html" onclick="closeMenu()">Products</a>
+  <a href="about.html" onclick="closeMenu()">About</a>
+  <a href="#faqs" onclick="closeMenu()">FAQs</a>
+  <button class="btn-nav" onclick="closeMenu(); window.location.href='products.html'">Shop Now</button>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-text reveal-left">
+    <h1>There is a product<br>for every <span class="flow">flow.</span></h1>
+    <p>Mormz Premium Protection is designed for the women who does it all without compromise. Advanced 4-in-1 functional technology meets targeted sizing.</p>
+    <div class="hero-btns">
+      <button class="btn-hero-primary" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">Shop Collection</button>
+      <button class="btn-hero-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Learn more</button>
+    </div>
+  </div>
+  <div class="hero-visual reveal-right">
+    <svg viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="140" cy="120" rx="110" ry="90" fill="rgba(255,255,255,0.12)"/>
+      <rect x="75" y="48" width="130" height="144" rx="65" ry="65" fill="white" opacity="0.9"/>
+      <path d="M75 96 Q36 90 38 122 Q40 148 75 142" fill="white" opacity="0.82"/>
+      <path d="M205 96 Q244 90 242 122 Q240 148 205 142" fill="white" opacity="0.82"/>
+      <rect x="131" y="68" width="18" height="104" rx="9" fill="rgba(184,192,255,0.3)"/>
+      <circle cx="108" cy="88"  r="2.5" fill="rgba(184,192,255,0.45)"/>
+      <circle cx="118" cy="76"  r="2"   fill="rgba(184,192,255,0.35)"/>
+      <circle cx="172" cy="88"  r="2.5" fill="rgba(184,192,255,0.45)"/>
+      <circle cx="162" cy="76"  r="2"   fill="rgba(184,192,255,0.35)"/>
+      <circle cx="108" cy="164" r="2.5" fill="rgba(184,192,255,0.45)"/>
+      <circle cx="172" cy="164" r="2.5" fill="rgba(184,192,255,0.45)"/>
+      <circle cx="108" cy="126" r="2"   fill="rgba(184,192,255,0.3)"/>
+      <circle cx="172" cy="126" r="2"   fill="rgba(184,192,255,0.3)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <p class="section-label reveal">Why Mormz?</p>
+  <h2 class="reveal">FEATURES</h2>
+  <p class="sub reveal">At Mormz, we focus on features blah blah blah blah blah.</p>
+  <div class="features-grid">
+    <div class="feature-item reveal reveal-delay-1">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div>
+      <h4>Lasts long</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+    <div class="feature-item reveal reveal-delay-2">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg></div>
+      <h4>Very strong protection</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+    <div class="feature-item reveal reveal-delay-3">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h4>Lasts long</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+    <div class="feature-item reveal reveal-delay-4">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <h4>Lasts long</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+    <div class="feature-item reveal reveal-delay-5">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div>
+      <h4>Lasts long</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+    <div class="feature-item reveal reveal-delay-6">
+      <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" stroke-width="0" fill="var(--purple)"/></svg></div>
+      <h4>Lasts long</h4>
+      <p>There is a collection for every woman. Find your fit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEGATIVE ION STRIPS -->
+<section class="ions-section" id="ions">
+  <div class="ions-left reveal-left">
+    <h2>NEGATIVE ION STRIPS</h2>
+    <p>More benefits of the Mormz sanitary pads are the negative ion strips. Learn about negative ion strips.</p>
+    <div class="ions-pad-wrap">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="110" cy="110" rx="102" ry="102" fill="none" stroke="rgba(200,182,255,0.2)" stroke-width="1"/>
+        <ellipse cx="110" cy="110" rx="84" ry="84"  fill="none" stroke="rgba(200,182,255,0.28)" stroke-width="1"/>
+        <ellipse cx="110" cy="110" rx="66" ry="66"  fill="none" stroke="rgba(200,182,255,0.36)" stroke-width="1"/>
+        <circle cx="110" cy="8"   r="4.5" fill="#C8B6FF" opacity="0.75"/>
+        <circle cx="212" cy="110" r="4.5" fill="#C8B6FF" opacity="0.75"/>
+        <circle cx="110" cy="212" r="4.5" fill="#C8B6FF" opacity="0.75"/>
+        <circle cx="8"   cy="110" r="4.5" fill="#C8B6FF" opacity="0.75"/>
+        <circle cx="42"  cy="34"  r="3.5" fill="#E7C6FF" opacity="0.65"/>
+        <circle cx="178" cy="34"  r="3.5" fill="#E7C6FF" opacity="0.65"/>
+        <circle cx="42"  cy="186" r="3.5" fill="#E7C6FF" opacity="0.65"/>
+        <circle cx="178" cy="186" r="3.5" fill="#E7C6FF" opacity="0.65"/>
+        <circle cx="26"  cy="70"  r="2.5" fill="#FFD6FF" opacity="0.55"/>
+        <circle cx="194" cy="70"  r="2.5" fill="#FFD6FF" opacity="0.55"/>
+        <circle cx="26"  cy="150" r="2.5" fill="#FFD6FF" opacity="0.55"/>
+        <circle cx="194" cy="150" r="2.5" fill="#FFD6FF" opacity="0.55"/>
+        <rect x="68" y="44" width="84" height="132" rx="42" ry="42" fill="white" opacity="0.88"/>
+        <path d="M68 86 Q42 82 44 110 Q46 132 68 128" fill="white" opacity="0.78"/>
+        <path d="M152 86 Q178 82 176 110 Q174 132 152 128" fill="white" opacity="0.78"/>
+        <rect x="105" y="60" width="10" height="100" rx="5" fill="rgba(184,192,255,0.28)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="ions-right reveal-right">
+    <div class="ion-chip">
+      <div class="ion-chip-title">Odour neutralization</div>
+      <div class="ion-chip-sub">Negative ions actively neutralize odour-causing bacteria, keeping you fresh and confident all day long.</div>
+    </div>
+    <div class="ion-chip">
+      <div class="ion-chip-title">Moisture absorption</div>
+      <div class="ion-chip-sub">Advanced micro-fibers pull moisture away from the skin instantly, ensuring lasting dryness throughout the day.</div>
+    </div>
+    <div class="ion-chip">
+      <div class="ion-chip-title">Anti-bacterial protection</div>
+      <div class="ion-chip-sub">The negative ion strip creates an environment that inhibits bacterial growth, reducing the risk of irritation and infection.</div>
+    </div>
+    <div class="ion-chip">
+      <div class="ion-chip-title">pH balance support</div>
+      <div class="ion-chip-sub">Helps maintain the body's natural pH balance for optimal comfort and health during your cycle.</div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR COLLECTION -->
+<section class="collection-section" id="collection">
+  <h2 class="reveal">OUR COLLECTION</h2>
+  <p class="sub reveal">There is a collection for every woman. Find your fit.</p>
+  <div class="collection-grid">
+    <div class="product-card reveal reveal-delay-1">
+      <div class="product-card-img"></div>
+      <div class="product-card-body">
+        <div class="product-card-header">
+          <span class="product-name">Regular</span>
+          <span class="product-price">$1200</span>
+        </div>
+        <ul class="product-features">
+          <li>4 in 1 functional blah blah</li>
+          <li>3 in 1 functional blah blah</li>
+          <li>4 in 1 functional blah blah</li>
+        </ul>
+        <button class="btn-buy">Buy Now</button>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-2">
+      <div class="product-card-img"></div>
+      <div class="product-card-body">
+        <div class="product-card-header">
+          <span class="product-name">Premium Plus</span>
+          <span class="product-price">$1200</span>
+        </div>
+        <ul class="product-features">
+          <li>7 in 1 functional blah blah</li>
+          <li>3 in 1 functional blah blah</li>
+          <li>4 in 1 functional blah blah</li>
+        </ul>
+        <button class="btn-buy">Buy Now</button>
+      </div>
+    </div>
+    <div class="product-card reveal reveal-delay-3">
+      <div class="product-card-img"></div>
+      <div class="product-card-body">
+        <div class="product-card-header">
+          <span class="product-name">Night Guard</span>
+          <span class="product-price">$1200</span>
+        </div>
+        <ul class="product-features">
+          <li>3 in 1 functional blah blah</li>
+          <li>2 in 1 functional blah blah</li>
+          <li>4 in 1 functional blah blah</li>
+        </ul>
+        <button class="btn-buy">Buy Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN THE FAMILY -->
+<section class="reviews-section" id="reviews">
+  <div class="reviews-header reveal">
+    <div>
+      <h2>JOIN THE FAMILY</h2>
+      <p>See what people are saying about Mormz</p>
+    </div>
+    <div class="reviews-rating">
+      <div class="score">4.9 ★</div>
+      <div class="sub">Based on 2400+ reviews</div>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal reveal-delay-1">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+    <div class="review-card reveal reveal-delay-2">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+    <div class="review-card reveal reveal-delay-3">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+    <div class="review-card reveal reveal-delay-4">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+    <div class="review-card reveal reveal-delay-5">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+    <div class="review-card reveal reveal-delay-6">
+      <div class="review-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="review-text">I run three businesses and I cannot afford any distractions. Mormz is the only pad that keeps with my schedule. The premium Plus is an absolute-wonder. I generally don't think about it anymore and that's exactly the point.</p>
+      <div class="review-author"><div class="avatar"></div><div><div class="author-name">Anna Smith</div><div class="author-title">Heads of Operations</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faqs">
+  <h2 class="reveal">Frequently Asked Questions (FAQs)</h2>
+  <p class="sub reveal">Here are some of the frequently asked questions at Mormz.</p>
+  <div class="faq-list">
+    <div class="faq-item reveal reveal-delay-1">
+      <div class="faq-header" onclick="toggleFaq(this)">
+        <span class="faq-question">How long does it last?</span>
+        <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="faq-answer">Each Mormz pad is designed to last up to 8 hours of comfortable, leak-free wear. The Premium Plus offers extended coverage of up to 10 hours, making it ideal for long work days or overnight use.</div>
+    </div>
+    <div class="faq-item reveal reveal-delay-2">
+      <div class="faq-header" onclick="toggleFaq(this)">
+        <span class="faq-question">How long does it last?</span>
+        <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="faq-answer">Mormz pads are dermatologically tested and made with skin-safe, hypoallergenic materials. The negative ion strip is a natural mineral component that has been safely used in personal care products worldwide.</div>
+    </div>
+    <div class="faq-item reveal reveal-delay-3">
+      <div class="faq-header" onclick="toggleFaq(this)">
+        <span class="faq-question">How long does it last?</span>
+        <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="faq-answer">We offer three sizes: Regular for light-to-medium flow, Premium Plus for heavy flow days, and Night Guard for overnight protection. You can also try our Bundle Pack to have all three on hand.</div>
+    </div>
+    <div class="faq-item reveal reveal-delay-4">
+      <div class="faq-header" onclick="toggleFaq(this)">
+        <span class="faq-question">How long does it last?</span>
+        <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="faq-answer">We ship across Nigeria and select African markets. Standard delivery takes 3–5 business days. Express delivery is available in Lagos, Abuja, and Port Harcourt within 24 hours.</div>
+    </div>
+    <div class="faq-item reveal reveal-delay-5">
+      <div class="faq-header" onclick="toggleFaq(this)">
+        <span class="faq-question">How long does it last?</span>
+        <div class="faq-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      </div>
+      <div class="faq-answer">Yes! We offer subscription plans with a 15% discount on all orders. You can customize the frequency — weekly, bi-weekly, or monthly — and pause or cancel anytime from your account dashboard.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>MORMZ</h3>
+      <p>Mormz Premium Protection for the Modern day woman.</p>
+      <div class="footer-socials">
+        <a class="social-icon" href="https://www.facebook.com/momsbeauty.parlour" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.269h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        </a>
+        <a class="social-icon" href="https://www.instagram.com/momsbeautyparlour1?igsh=MXZkcDBwcTZrOWptMg==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.97.24 2.43.403a4.9 4.9 0 011.772 1.153 4.9 4.9 0 011.153 1.772c.163.46.35 1.26.403 2.43.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.97-.403 2.43a4.9 4.9 0 01-1.153 1.772 4.9 4.9 0 01-1.772 1.153c-.46.163-1.26.35-2.43.403-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.97-.24-2.43-.403a4.9 4.9 0 01-1.772-1.153A4.9 4.9 0 012.4 19.28c-.163-.46-.35-1.26-.403-2.43C1.939 15.584 1.927 15.204 1.927 12s.012-3.584.07-4.85c.054-1.17.24-1.97.403-2.43A4.9 4.9 0 013.553 3.02 4.9 4.9 0 015.325 1.867c.46-.163 1.26-.35 2.43-.403C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.775.131 4.902.333 4.14.63A7.07 7.07 0 001.63 2.14 7.07 7.07 0 00.63 4.14C.333 4.902.131 5.775.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.059 1.278.261 2.15.558 2.912a7.07 7.07 0 001.51 2.51 7.07 7.07 0 002.51 1.51c.763.297 1.635.499 2.913.558C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.059 2.15-.261 2.912-.558a7.07 7.07 0 002.51-1.51 7.07 7.07 0 001.51-2.51c.297-.763.499-1.635.558-2.913.058-1.28.072-1.689.072-4.947s-.014-3.667-.072-4.948c-.059-1.277-.261-2.15-.558-2.912A7.07 7.07 0 0021.86 1.63 7.07 7.07 0 0019.86.63C19.098.333 18.226.131 16.948.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <div class="social-icon">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.016 3.016 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#">Regular</a></li>
+        <li><a href="#">Premium Plus</a></li>
+        <li><a href="#">Night Guard</a></li>
+        <li><a href="#">Bundle Packs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Mission</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Find a stockist</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">2026 Mormz All rights reserved.</div>
+</footer>
+
+<script>
+  /* ── Scroll reveal ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.10 });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+  /* ── Hero immediately visible ── */
+  document.querySelectorAll('.hero .reveal-left, .hero .reveal-right').forEach(el => {
+    el.classList.add('visible');
+  });
+
+  /* ── FAQ accordion ── */
+  function toggleFaq(header) {
+    const item = header.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  /* ── Mobile menu ── */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+  /* Close mobile menu on outside click */
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('hamburger');
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+      closeMenu();
+    }
+  });
+</script>
+</body>
+</html>
